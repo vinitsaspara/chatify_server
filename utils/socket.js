@@ -1,21 +1,22 @@
 import { Server } from "socket.io";
 
-const userSocketMap = {}
-
+const userSocketMap = {};
 let io;
 
 export function initSocket(server) {
     io = new Server(server, {
         cors: {
-            origin: [process.env.FRONTEND_URL]
-        }
-    })
+            origin: process.env.FRONTEND_URL, // string, not array
+            credentials: true,                // ✅ REQUIRED
+            methods: ["GET", "POST", "PUT"],         // ✅ REQUIRED
+        },
+    });
 
     io.on("connection", (socket) => {
         const userId = socket.handshake.query.userId;
 
-        if (!userId) {
-            console.log("Socket connected without userId");
+        if (!userId || typeof userId !== "string") {
+            console.log("Socket connected without valid userId");
             return;
         }
 
@@ -27,11 +28,10 @@ export function initSocket(server) {
             io.emit("getOnlineUsers", Object.keys(userSocketMap));
         });
     });
-
 }
 
 export function getReceiverSocketId(userId) {
-    return userSocketMap[userId]
+    return userSocketMap[userId];
 }
 
-export { io }
+export { io };
