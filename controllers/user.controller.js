@@ -91,7 +91,7 @@ export const signout = asyncHandler(async (req, res) => {
     httpOnly: true,
     maxAge: 0,
     sameSite: "strict",
-    secure: process.env.NODE_ENV !== "development" ? true : false
+    secure: true
   }).json({
     success: true,
     message: "User logged out successfully"
