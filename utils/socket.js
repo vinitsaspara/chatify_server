@@ -6,7 +6,7 @@ let io;
 export function initSocket(server) {
     io = new Server(server, {
         cors: {
-            origin: process.env.FRONTEND_URL, // string, not array
+            origin: "https://chatify-client.vercel.app", // string, not array
             credentials: true,                // ✅ REQUIRED
             methods: ["GET", "POST", "PUT"],         // ✅ REQUIRED
         },
